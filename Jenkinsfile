@@ -1,24 +1,17 @@
 pipeline {
     agent any
     stages{
-        stage('Build'){
+        stage('Build') {
             steps {
-                script{
-                    sh 'mvn clean install -DskipTest'
+                script {
+                    sh 'mvn clean install'
                     archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
                 }
             }
         }
-        stage('SonarQube'){
-                    steps {
-                        script{
-                            sh 'comando do sonarqube'
-                        }
-                    }
-                }
-        stage('Unit Testing'){
+        stage('Unit Testing') {
             steps {
-                script{
+                script {
                     sh 'mvn clean test'
                     junit '**/target/surefire-reports/*.xml'
                 }
@@ -27,7 +20,7 @@ pipeline {
         stage('Integration Testing') {
             steps {
                 script {
-
+             
                     sh 'git clone https://github.com/robsonagapito/integration-testing-java.git'
                     sh 'cd integration-testing-java && mvn verify'
                 }
